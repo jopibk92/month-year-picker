@@ -61,8 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () => _onPressed(context: context),
             ),
             TextButton(
-              child: const Text('BAHASA MALAYSIA'),
-              onPressed: () => _onPressed(context: context, locale: 'ms'),
+              child: const Text('hrvatski'),
+              onPressed: () => _onPressed(context: context, locale: 'hr'),
             ),
             TextButton(
               child: const Text('اللغة العربية'),
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     required BuildContext context,
     String? locale,
   }) async {
-    final localeObj = locale != null ? Locale(locale) : null;
+    final localeObj = Locale("hr", "HR");
     final selected = await showMonthYearPicker(
       context: context,
       initialDate: _selected ?? DateTime.now(),

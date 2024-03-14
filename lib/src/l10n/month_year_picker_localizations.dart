@@ -8,7 +8,7 @@ import 'package:intl/intl.dart' as intl;
 import 'month_year_picker_localizations_ar.dart';
 import 'month_year_picker_localizations_de.dart';
 import 'month_year_picker_localizations_en.dart';
-import 'month_year_picker_localizations_fr.dart';
+import 'month_year_picker_localizations_hr.dart';
 import 'month_year_picker_localizations_id.dart';
 import 'month_year_picker_localizations_ja.dart';
 import 'month_year_picker_localizations_ko.dart';
@@ -107,7 +107,7 @@ abstract class MonthYearPickerLocalizations {
     Locale('ar'),
     Locale('de'),
     Locale('en'),
-    Locale('fr'),
+    Locale('hr'),
     Locale('id'),
     Locale('ja'),
     Locale('ko'),
@@ -154,7 +154,7 @@ class _MonthYearPickerLocalizationsDelegate
         'ar',
         'de',
         'en',
-        'fr',
+        'hr',
         'id',
         'ja',
         'ko',
@@ -191,8 +191,8 @@ MonthYearPickerLocalizations lookupMonthYearPickerLocalizations(Locale locale) {
       return MonthYearPickerLocalizationsDe();
     case 'en':
       return MonthYearPickerLocalizationsEn();
-    case 'fr':
-      return MonthYearPickerLocalizationsFr();
+    case 'hr':
+      return MonthYearPickerLocalizationsHr();
     case 'id':
       return MonthYearPickerLocalizationsId();
     case 'ja':
