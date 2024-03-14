@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final selected = await showMonthYearPicker(
       context: context,
       initialDate: _selected ?? DateTime.now(),
-      firstDate: DateTime(2019),
+      firstDate: DateTime(1980),
       lastDate: DateTime(2030),
       locale: localeObj,
     );

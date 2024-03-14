@@ -126,23 +126,15 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
   Size get _dialogSize {
     final orientation = MediaQuery.of(context).orientation;
     final offset =
-        Theme.of(context).materialTapTargetSize == MaterialTapTargetSize.padded
-            ? const Offset(0.0, 24.0)
-            : Offset.zero;
-    switch (orientation) {
-      case Orientation.portrait:
-        return _portraitDialogSize + offset;
-      case Orientation.landscape:
-        return _landscapeDialogSize + offset;
-    }
+        Theme.of(context).materialTapTargetSize == MaterialTapTargetSize.padded ? const Offset(0.0, 24.0) : Offset.zero;
+    return _portraitDialogSize + offset;
   }
 
   // --------------------------------- METHODS ---------------------------------
   @override
   void initState() {
     super.initState();
-    _isShowingYear =
-        widget.initialMonthYearPickerMode == MonthYearPickerMode.year;
+    _isShowingYear = widget.initialMonthYearPickerMode == MonthYearPickerMode.year;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(_updatePaginators);
     });
@@ -155,7 +147,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
     final media = MediaQuery.of(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final orientation = media.orientation;
+    // final orientation = media.orientation;
     final textTheme = theme.textTheme;
     // Constrain the textScaleFactor to the largest supported value to prevent
     // layout issues.
@@ -163,12 +155,8 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
     final direction = Directionality.of(context);
 
     final dateText = materialLocalizations.formatMonthYear(_selectedDate);
-    final onPrimarySurface = colorScheme.brightness == Brightness.light
-        ? colorScheme.onPrimary
-        : colorScheme.onSurface;
-    final dateStyle = orientation == Orientation.landscape
-        ? textTheme.headlineSmall?.copyWith(color: onPrimarySurface)
-        : textTheme.headlineMedium?.copyWith(color: onPrimarySurface);
+    final onPrimarySurface = colorScheme.brightness == Brightness.light ? colorScheme.onPrimary : colorScheme.onSurface;
+    final dateStyle = textTheme.headlineMedium?.copyWith(color: onPrimarySurface);
 
     final Widget actions = Container(
       alignment: AlignmentDirectional.centerEnd,
@@ -195,7 +183,6 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
       titleText: dateText,
       titleSemanticsLabel: semanticText,
       titleStyle: dateStyle,
-      orientation: orientation,
     );
 
     final switcher = Stack(
@@ -235,17 +222,13 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
             children: [
               IconButton(
                 icon: Icon(
-                  direction == TextDirection.rtl
-                      ? Icons.keyboard_arrow_right
-                      : Icons.keyboard_arrow_left,
+                  direction == TextDirection.rtl ? Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
                 ),
                 onPressed: _canGoPrevious ? _goToPreviousPage : null,
               ),
               IconButton(
                 icon: Icon(
-                  direction == TextDirection.rtl
-                      ? Icons.keyboard_arrow_left
-                      : Icons.keyboard_arrow_right,
+                  direction == TextDirection.rtl ? Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
                 ),
                 onPressed: _canGoNext ? _goToNextPage : null,
               )
@@ -258,11 +241,8 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
 
     final picker = LayoutBuilder(
       builder: (context, constraints) {
-        final pickerMaxWidth =
-            _landscapeDialogSize.width - _datePickerHeaderLandscapeWidth;
-        final width = constraints.maxHeight < pickerMaxWidth
-            ? constraints.maxHeight / 3.0 * 4.0
-            : null;
+        final pickerMaxWidth = _landscapeDialogSize.width - _datePickerHeaderLandscapeWidth;
+        final width = constraints.maxHeight < pickerMaxWidth ? constraints.maxHeight / 3.0 * 4.0 : null;
 
         return Stack(
           children: [
@@ -283,8 +263,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
                   onPageChanged: _updateSelectedDate,
                   onYearSelected: _updateYear,
                   selectedDate: _selectedDate,
-                  selectableMonthYearPredicate:
-                      widget.selectableMonthYearPredicate,
+                  selectableMonthYearPredicate: widget.selectableMonthYearPredicate,
                 ),
               ),
             ),
@@ -305,8 +284,7 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
                   onPageChanged: _updateSelectedDate,
                   onMonthSelected: _updateMonth,
                   selectedDate: _selectedDate,
-                  selectableMonthYearPredicate:
-                      widget.selectableMonthYearPredicate,
+                  selectableMonthYearPredicate: widget.selectableMonthYearPredicate,
                 ),
               ),
             )
@@ -335,38 +313,16 @@ class _MonthYearPickerDialogState extends State<MonthYearPickerDialog> {
             ),
             child: Builder(
               builder: (context) {
-                switch (orientation) {
-                  case Orientation.portrait:
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        header,
-                        switcher,
-                        Expanded(child: picker),
-                        actions,
-                      ],
-                    );
-                  case Orientation.landscape:
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        header,
-                        Flexible(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              switcher,
-                              Expanded(child: picker),
-                              actions,
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                }
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    header,
+                    switcher,
+                    Expanded(child: picker),
+                    actions,
+                  ],
+                );
               },
             ),
           ),
@@ -431,7 +387,6 @@ class _Header extends StatelessWidget {
     required this.titleText,
     this.titleSemanticsLabel,
     required this.titleStyle,
-    required this.orientation,
   }) : super(key: key);
 
   // ---------------------------------- FIELDS ---------------------------------
@@ -439,7 +394,6 @@ class _Header extends StatelessWidget {
   final String titleText;
   final String? titleSemanticsLabel;
   final TextStyle? titleStyle;
-  final Orientation orientation;
 
   // --------------------------------- METHODS ---------------------------------
   @override
@@ -451,10 +405,8 @@ class _Header extends StatelessWidget {
     // The header should use the primary color in light themes and surface color
     // in dark.
     final isDark = colorScheme.brightness == Brightness.dark;
-    final primarySurfaceColor =
-        isDark ? colorScheme.surface : colorScheme.primary;
-    final onPrimarySurfaceColor =
-        isDark ? colorScheme.onSurface : colorScheme.onPrimary;
+    final primarySurfaceColor = isDark ? colorScheme.surface : colorScheme.primary;
+    final onPrimarySurfaceColor = isDark ? colorScheme.onSurface : colorScheme.onPrimary;
 
     final helpStyle = textTheme.labelSmall?.copyWith(
       color: onPrimarySurfaceColor,
@@ -471,61 +423,30 @@ class _Header extends StatelessWidget {
       titleText,
       semanticsLabel: titleSemanticsLabel ?? titleText,
       style: titleStyle,
-      maxLines: orientation == Orientation.portrait ? 1 : 2,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
 
-    switch (orientation) {
-      case Orientation.portrait:
-        return SizedBox(
-          height: _datePickerHeaderPortraitHeight,
-          child: Material(
-            color: primarySurfaceColor,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: 24.0,
-                end: 12.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16.0),
-                  help,
-                  const Flexible(child: SizedBox(height: 38.0)),
-                  title,
-                ],
-              ),
-            ),
+    return SizedBox(
+      height: _datePickerHeaderPortraitHeight,
+      child: Material(
+        color: primarySurfaceColor,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(
+            start: 24.0,
+            end: 12.0,
           ),
-        );
-      case Orientation.landscape:
-        return SizedBox(
-          width: _datePickerHeaderLandscapeWidth,
-          child: Material(
-            color: primarySurfaceColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: _headerPaddingLandscape,
-                  ),
-                  child: help,
-                ),
-                const SizedBox(height: 56.0),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: _headerPaddingLandscape,
-                    ),
-                    child: title,
-                  ),
-                ),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16.0),
+              help,
+              const Flexible(child: SizedBox(height: 38.0)),
+              title,
+            ],
           ),
-        );
-    }
+        ),
+      ),
+    );
   }
 }
